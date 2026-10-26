@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Data Tagger Journey Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#263f77; --blue:#315a96; --mid:#4076b4; --sky:#5fb6e6; --ice:#8fc5ea; --sun:#e0de50;
+  --bg:#f4f7fc; --card:#ffffff; --ink:#152340; --muted:#5b6b88; --line:#dde5f1; --soft:#eaf1fa;
+  --ok:#1f8a5b; --okbg:#e3f5ec; --part:#9a6a00; --partbg:#fbf3d5; --no:#b23a3a; --nobg:#fbe6e6;
+  --radius:14px; --shadow:0 1px 2px rgba(21,35,64,.06),0 6px 20px rgba(21,35,64,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{overflow-x:hidden;font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--mid)}
+.wrap{max-width:1360px;margin:0 auto;padding:0 24px}
+
+/* top */
+header.top{background:var(--navy);color:#fff;position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;gap:24px;min-height:64px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:-.01em;font-size:17px}
+.brand .dot{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--sky),var(--sun))}
+.brand small{display:block;font-weight:500;font-size:12px;color:var(--ice);letter-spacing:0}
+nav.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav.tabs button{background:transparent;border:0;color:#cfe0f5;padding:8px 14px;border-radius:999px;font-weight:600;font-size:14px}
+nav.tabs button:hover{background:rgba(255,255,255,.08);color:#fff}
+nav.tabs button.on{background:var(--sun);color:var(--navy)}
+
+main{padding:28px 0 64px}
+h1,h2,h3{letter-spacing:-.015em;margin:0}
+.eyebrow{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mid)}
+.muted{color:var(--muted)}
+
+/* journey cards */
+.jgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.jcard{text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;transition:transform .15s,border-color .15s}
+.jcard:hover{transform:translateY(-2px);border-color:var(--ice)}
+.jcard.on{border-color:var(--navy);background:linear-gradient(180deg,#fff, #f1f6fd)}
+.jcard .num{display:flex;align-items:center;justify-content:space-between}
+.jcard .num b{font-size:13px;background:var(--navy);color:#fff;border-radius:8px;padding:2px 9px}
+.jcard.on .num b{background:var(--sun);color:var(--navy)}
+.jcard h3{font-size:17px}
+.jcard p{margin:0;font-size:13px;color:var(--muted)}
+.cov{display:flex;height:6px;border-radius:99px;overflow:hidden;background:var(--soft)}
+.cov i{display:block}
+.cov .a{background:var(--ok)} .cov .s{background:#e3b23c} .cov .b{background:#e07a7a}
+.covtxt{font-size:12px;color:var(--muted)}
+
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;border-radius:999px;padding:2px 10px;background:var(--soft);color:var(--blue);white-space:nowrap}
+.chip.coord{background:#e4ecf8;color:var(--navy)}
+.chip.val{background:#e2f3fb;color:#1c6f99}
+.chip.both{background:#f6f5d6;color:#6b6914}
+.st{font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.st.ada{background:var(--okbg);color:var(--ok)}
+.st.sebagian{background:var(--partbg);color:var(--part)}
+.st.belum{background:var(--nobg);color:var(--no)}
+
+/* journey layout */
+.jlayout{display:grid;grid-template-columns:330px 1fr;gap:20px;align-items:start}
+.steps{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px;position:sticky;top:84px;max-height:calc(100vh - 100px);overflow:auto}
+.steps .head{padding:8px 10px 12px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.steps .head h2{font-size:18px}
+.step{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center;width:100%;text-align:left;background:transparent;border:0;border-radius:10px;padding:9px 10px;position:relative}
+.step:hover{background:var(--soft)}
+.step.on{background:var(--navy);color:#fff}
+.step .code{font-weight:800;font-size:13px;color:var(--mid)}
+.step.on .code{color:var(--sun)}
+.step .t{font-size:13.5px;font-weight:600;line-height:1.3}
+.step .t small{display:block;font-weight:500;color:var(--muted);font-size:12px;margin-top:2px}
+.step.on .t small{color:var(--ice)}
+.dotst{display:inline-block;width:9px;height:9px;border-radius:50%;flex:none}
+.dotst.ada{background:var(--ok)} .dotst.sebagian{background:#e3b23c} .dotst.belum{background:#e07a7a}
+
+.detail{display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px}
+.dhead{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.dhead h2{font-size:24px;margin-top:4px}
+.dhead .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.navbtns{display:flex;gap:6px}
+.navbtns button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:6px 12px;font-weight:600;font-size:13px}
+.navbtns button:disabled{opacity:.35;cursor:default}
+.flow{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr;align-items:stretch;margin-top:18px}
+.flow .box{background:var(--bg);border-radius:12px;padding:12px 14px}
+.flow .box .eyebrow{margin-bottom:4px}
+.flow .box p{margin:0;font-size:14px}
+.flow .arr{display:flex;align-items:center;justify-content:center;color:var(--ice);font-weight:800}
+.callout{margin-top:14px;border-left:4px solid var(--sun);background:#fcfbe8;padding:10px 14px;border-radius:0 10px 10px 0;font-size:14px}
+.callout b{color:var(--navy)}
+.callout.warn{border-color:#e07a7a;background:#fdf1f1}
+.callout.part{border-color:#e3b23c;background:#fdf8e8}
+.callout.okc{border-color:var(--ok);background:#eef8f3}
+
+.sec-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.sec-title h3{font-size:16px}
+.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.thumb{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:6px;text-align:left;display:flex;flex-direction:column;gap:6px;transition:border-color .15s,transform .15s}
+.thumb:hover{border-color:var(--mid);transform:translateY(-2px)}
+.thumb .img{aspect-ratio:1440/972;border-radius:8px;overflow:hidden;background:var(--soft)}
+.thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.thumb span{font-size:12.5px;font-weight:600;padding:0 4px 2px;line-height:1.3}
+.thumb span small{display:block;color:var(--muted);font-weight:500}
+.empty{padding:18px;border:1.5px dashed #e7b4b4;border-radius:12px;color:var(--no);background:#fff8f8;font-size:14px}
+
+/* requirements */
+.layers{display:grid;gap:14px}
+.layer h4{margin:0 0 8px;font-size:13px;display:flex;align-items:center;gap:8px}
+.layer h4 .tag{font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;color:#fff}
+.tag.BE{background:var(--navy)} .tag.FE{background:var(--mid)} .tag.DS{background:#1c8fc4} .tag.DP{background:#7b8aa6}
+.req{scroll-margin-top:96px;border:1.5px solid var(--line);border-radius:12px;margin-bottom:8px;overflow:hidden;background:#fff}
+.req > button{display:grid;grid-template-columns:86px 1fr 18px;gap:10px;align-items:center;width:100%;text-align:left;background:transparent;border:0;padding:10px 12px}
+.req > button:hover{background:var(--soft)}
+.req .rc{font-weight:800;font-size:13px;color:var(--navy);font-variant-numeric:tabular-nums}
+.req .rs{font-size:14px}
+.req .rs small{display:block;color:var(--muted);font-size:12px}
+.req .chev{transition:transform .2s;color:var(--muted)}
+.req.open .chev{transform:rotate(90deg)}
+.req .body{display:none;padding:0 14px 14px 108px;font-size:13.5px}
+.req.open .body{display:block}
+.req .body p{margin:0 0 8px}
+.req .body .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:8px}
+.links{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.links button{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:2px 8px;font-size:12px;font-weight:700;color:var(--blue)}
+.links button:hover{border-color:var(--mid)}
+.found{border:1.5px dashed var(--ice);border-radius:12px;padding:10px 12px;background:#f7fbff}
+.found > button{background:none;border:0;padding:0;font-weight:700;color:var(--blue);font-size:14px;display:flex;gap:8px;align-items:center}
+.found .list{display:none;margin-top:10px}
+.found.open .list{display:block}
+
+/* tables / lists */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.search{flex:1;min-width:220px;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;font:inherit;background:#fff}
+.search:focus{outline:2px solid var(--ice);border-color:var(--mid)}
+.seg{display:flex;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:3px}
+.seg button{border:0;background:transparent;padding:6px 12px;border-radius:9px;font-weight:600;font-size:13px;color:var(--muted)}
+.seg button.on{background:var(--navy);color:#fff}
+table.list{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.list th{background:var(--navy);color:#fff;text-align:left;font-size:12.5px;font-weight:700;padding:10px 12px}
+.list td{padding:10px 12px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}
+.list tr.click{cursor:pointer}
+.list tr.click:hover td{background:var(--soft)}
+.list td.c{font-weight:800;color:var(--navy);white-space:nowrap}
+.nores{padding:24px;text-align:center;color:var(--muted)}
+
+.gal-group{margin-bottom:26px}
+.gal-group h3{font-size:16px;margin-bottom:10px;display:flex;gap:8px;align-items:center}
+.ref-note{font-size:13px;color:var(--muted);margin:-4px 0 10px}
+
+.intro{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:22px;align-items:end}
+.intro h1{font-size:30px;line-height:1.15}
+.intro p{margin:8px 0 0;color:var(--muted);max-width:640px}
+.legend{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;font-size:12.5px;color:var(--muted);align-items:center}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+
+.rules{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.rule{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:14px 16px}
+.rule .rh{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rule b{color:var(--navy)}
+.rule p{margin:0 0 6px;font-size:14px}
+
+/* lightbox */
+.lb{position:fixed;inset:0;background:rgba(10,20,40,.88);z-index:50;display:none;flex-direction:column}
+.lb.open{display:flex}
+.lb .bar{display:flex;align-items:center;gap:12px;color:#fff;padding:12px 18px;flex-wrap:wrap}
+.lb .bar .t{font-weight:700}
+.lb .bar .t small{display:block;font-weight:500;color:var(--ice);font-size:12px}
+.lb .bar .sp{flex:1}
+.lb .bar button{background:rgba(255,255,255,.12);border:0;color:#fff;border-radius:10px;padding:7px 12px;font-weight:600}
+.lb .bar button:hover{background:rgba(255,255,255,.22)}
+.lb .stage{flex:1;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:0 18px 18px}
+.lb .stage img{max-width:100%;border-radius:8px;background:#fff;cursor:zoom-in}
+.lb .stage img.fit{max-height:calc(100vh - 150px);}
+.lb .stage img.zoom{max-width:none;width:min(1800px,180%);cursor:zoom-out}
+.lb .used{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--ice)}
+.lb .used button{padding:3px 8px;font-size:12px;background:var(--sun);color:var(--navy);font-weight:700}
+
+footer{color:var(--muted);font-size:12.5px;padding:24px 0 40px;border-top:1px solid var(--line)}
+
+@media (max-width:1100px){
+  .jgrid{grid-template-columns:repeat(2,1fr)}
+  .jlayout{grid-template-columns:1fr}
+  .steps{position:static;max-height:none}
+  .intro{grid-template-columns:1fr}.legend{justify-content:flex-start}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .jgrid,.jlayout,.intro{grid-template-columns:minmax(0,1fr)}
+  .jlayout > *, .jgrid > *{min-width:0}
+  .strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  nav.tabs{margin-left:0;overflow-x:auto;flex-wrap:nowrap;width:100%;padding-bottom:8px}
+  nav.tabs button{flex:none}
+  .flow{grid-template-columns:minmax(0,1fr)}.flow .arr{transform:rotate(90deg);height:24px}
+  .req .body{padding-left:14px}
+  .req > button{grid-template-columns:70px 1fr 14px}
+  .list .hide-s{display:none}
+  .intro h1{font-size:23px}
+  .intro p{font-size:14px}
+  main{padding:18px 0 40px}
+  /* header: brand row + scrollable tabs */
+  header.top{position:static}
+  .top .wrap{gap:8px;min-height:0;padding-top:10px}
+  .brand{font-size:15px}
+  nav.tabs::-webkit-scrollbar{display:none}
+  nav.tabs button{padding:7px 12px;font-size:13px}
+  /* journey cards: swipeable row */
+  .jgrid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin:0 -16px 16px;padding:2px 16px 8px}
+  .jgrid::-webkit-scrollbar{display:none}
+  .jcard{flex:0 0 78%;scroll-snap-align:start;padding:14px}
+  .jcard p{display:none}
+  .jcard h3{font-size:16px}
+  /* steps: horizontal chips */
+  .steps{padding:8px;border-radius:12px;display:flex;overflow-x:auto;gap:6px;scroll-snap-type:x proximity;position:sticky;top:0;z-index:5;margin:0 -16px;border-radius:0;box-shadow:0 2px 8px rgba(21,35,64,.08)}
+  .steps::-webkit-scrollbar{display:none}
+  .steps .head{display:none}
+  .step{flex:0 0 auto;display:flex;gap:6px;width:auto;max-width:200px;padding:7px 10px;border:1.5px solid var(--line);scroll-snap-align:start}
+  .step .t{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .step .t small{display:none}
+  .step.on{border-color:var(--navy)}
+  .jlayout{gap:12px}
+  .panel{padding:16px;border-radius:12px}
+  .dhead h2{font-size:20px}
+  .navbtns{width:100%}.navbtns button{flex:1;padding:9px 12px}
+  .flow{margin-top:14px}.flow .box p{font-size:14px}
+  .strip{gap:8px}
+  .thumb span{font-size:12px}
+  .req .rs{font-size:13.5px}
+  .found > button{font-size:13px;text-align:left;flex-wrap:wrap}
+  .seg{width:100%}.seg button{flex:1}
+  .search{min-width:0;width:100%}
+  .list td,.list th{padding:9px 8px;font-size:13px}
+  .rules{grid-template-columns:minmax(0,1fr)}
+  /* lightbox */
+  .lb .bar{padding:10px 12px;gap:8px}
+  .lb .bar .t{width:100%;font-size:14px}
+  .lb .used{order:3;width:100%}
+  .lb .bar .sp{display:none}
+  .lb .bar .lbl{display:none}
+  .lb .bar button{padding:8px 14px}
+  #lbN{margin-right:auto}
+  .lb .stage{padding:0 8px 12px;align-items:center}
+  .lb .stage img.fit{max-height:none;width:100%}
+  .lb .stage img.zoom{width:250%}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><div class="dot"></div><div>Data Tagger Panel<small>Peta journey · requirement · lofi</small></div></div>
+    <nav class="tabs" id="tabs">
+      <button data-v="journey">Journey</button>
+      <button data-v="story">User Story</button>
+      <button data-v="codes">Kode Requirement</button>
+      <button data-v="lofi">Lofi</button>
+      <button data-v="rules">Aturan & Klarifikasi</button>
+    </nav>
+  </div>
+</header>
+<main><div class="wrap" id="app"></div></main>
+<div class="wrap"><footer id="foot"></footer></div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true">
+  <div class="bar">
+    <div class="t" id="lbT"></div>
+    <div class="used" id="lbUsed"></div>
+    <div class="sp"></div>
+    <span id="lbN" style="color:var(--ice);font-size:13px"></span>
+    <button id="lbPrev">←<span class="lbl"> Sebelumnya</span></button>
+    <button id="lbNext"><span class="lbl">Berikutnya </span>→</button>
+    <button id="lbX"><span class="lbl">Tutup </span>✕</button>
+  </div>
+  <div class="stage"><img id="lbImg" class="fit" alt=""></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+const D = window.DATA;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad = n => String(n).padStart(2, "0");
+const scr = p => D.screens[p - 1];
+const full = p => `lofi/full/p-${pad(p)}.jpg`;
+const thumb = p => `lofi/thumb/p-${pad(p)}.jpg`;
+const STL = {ada:"Lofi ada", sebagian:"Lofi sebagian", belum:"Belum terlihat di lofi"};
+const LAYER = {BE:"Backend", FE:"Frontend", DS:"Design", DP:"DevOps & operasional"};
+const actorChip = a => a === "Coordinator" ? `<span class="chip coord">Coordinator</span>` : a === "Validator" ? `<span class="chip val">Validator</span>` : `<span class="chip both">${esc(a)}</span>`;
+const foundSet = new Set(D.foundation);
+
+// reverse maps
+const codeUsedBy = {}; Object.values(D.rows).forEach(r => r.reqs.forEach(c => (codeUsedBy[c] ||= []).push(r.code)));
+const pageUsedBy = {}; Object.values(D.rows).forEach(r => (r.screens||[]).forEach(p => (pageUsedBy[p] ||= []).push(r.code)));
+const order = D.journeys.flatMap(j => j.steps);
+
+// ---------- routing ----------
+function go(h){ location.hash = h; }
+window.addEventListener("hashchange", render);
+document.getElementById("tabs").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b) return;
+  go(b.dataset.v === "journey" ? "#/journey/J1" : "#/" + b.dataset.v);
+});
+function parse(){
+  const p = location.hash.replace(/^#\/?/, "").split("/").map(decodeURIComponent);
+  return {view: p[0] || "journey", a: p[1], b: p[2]};
+}
+
+function render(){
+  const r = parse();
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === r.view));
+  const app = $("#app");
+  if(r.view === "story") app.innerHTML = viewStory();
+  else if(r.view === "codes") app.innerHTML = viewCodes(r.a);
+  else if(r.view === "lofi") app.innerHTML = viewLofi();
+  else if(r.view === "rules") app.innerHTML = viewRules();
+  else app.innerHTML = viewJourney(r.a, r.b);
+  bind(r);
+  if(r.view === "codes" && r.a){ const el = document.getElementById("req-" + r.a); if(el){ el.scrollIntoView({block:"center"}); } }
+  else if(r.view === "journey" && r.b){
+    const d = $("#detail");
+    if((lastView && lastView !== "journey") || d.getBoundingClientRect().top < 0) window.scrollTo(0, d.getBoundingClientRect().top + scrollY - 84);
+  }
+  else window.scrollTo(0, 0);
+  const on = document.querySelector(".steps .step.on");
+  if(on){ const sc = on.parentElement; if(sc.scrollWidth > sc.clientWidth) sc.scrollLeft = on.offsetLeft - 16; }
+  lastView = r.view;
+}
+let lastView = null;
+
+// ---------- journey ----------
+function covCounts(steps){ const c={ada:0,sebagian:0,belum:0}; steps.forEach(s=>c[D.rows[s].lofi]++); return c; }
+function covBar(steps){
+  const c = covCounts(steps), n = steps.length;
+  return `<div class="cov">${["a","s","b"].map((k,i)=>{const v=[c.ada,c.sebagian,c.belum][i];return v?`<i class="${k}" style="width:${v/n*100}%"></i>`:""}).join("")}</div>
+  <div class="covtxt">${c.ada} ada · ${c.sebagian} sebagian · ${c.belum} belum terlihat</div>`;
+}
+function viewJourney(jid, sid){
+  const j = D.journeys.find(x => x.id === jid) || D.journeys[0];
+  const step = j.steps.includes(sid) ? sid : j.steps[0];
+  const cards = D.journeys.map((x,i) => `
+    <button class="jcard ${x.id===j.id?"on":""}" data-go="#/journey/${x.id}">
+      <div class="num"><b>Journey ${i+1}</b>${actorChip(x.actor.includes("+")?"Coordinator + Validator":x.actor)}</div>
+      <h3>${esc(x.title)}</h3>
+      <p>${esc(x.blurb)}</p>
+      <div class="covtxt"><b style="color:var(--ink)">${x.steps.length} langkah</b> · ${x.steps[0]}–${x.steps[x.steps.length-1]}</div>
+      ${covBar(x.steps)}
+    </button>`).join("");
+  const list = j.steps.map(s => { const r = D.rows[s]; return `
+    <button class="step ${s===step?"on":""}" data-go="#/journey/${j.id}/${s}">
+      <span class="code">${s}</span>
+      <span class="t">${esc(r.stage)}<small>${esc(r.activity)}</small></span>
+      <span class="dotst ${r.lofi}" title="${STL[r.lofi]}"></span>
+    </button>`}).join("");
+  return `
+  <section class="intro">
+    <div><div class="eyebrow">NoLimit Data Tagger Panel</div>
+      <h1>Dari user story ke kode requirement dan layar lofi</h1>
+      <p>Pilih journey, lalu klik langkahnya. Setiap langkah menunjukkan apa yang dilakukan pengguna, kode requirement yang memenuhinya, dan layar lofi Figma (iterasi 4) yang sudah dibuat.</p></div>
+    <div class="legend"><span><i class="dotst ada" style="display:inline-block"></i>Lofi ada</span><span><i class="dotst sebagian" style="display:inline-block"></i>Sebagian</span><span><i class="dotst belum" style="display:inline-block"></i>Belum terlihat</span></div>
+  </section>
+  <div class="jgrid">${cards}</div>
+  <div class="jlayout">
+    <aside class="steps"><div class="head"><div class="eyebrow">${esc(j.actor)}</div><h2>${esc(j.title)}</h2></div>${list}</aside>
+    <div class="detail" id="detail">${stepDetail(j, step)}</div>
+  </div>`;
+}
+function stepDetail(j, s){
+  const r = D.rows[s], i = j.steps.indexOf(s);
+  const prev = j.steps[i-1], next = j.steps[i+1];
+  const pages = r.screens || [];
+  const shots = pages.length ? `<div class="strip">${pages.map(p => thumbHTML(p, pages)).join("")}</div>`
+    : `<div class="empty">Belum ada layar lofi untuk langkah ini.</div>`;
+  const covCls = r.lofiFlag ? "warn" : r.lofi==="ada"?"okc":r.lofi==="sebagian"?"part":"warn";
+  const noteLbl = r.lofiFlag ? "Perlu diselaraskan dengan charter:" : "Catatan review lofi:";
+  return `
+  <div class="panel">
+    <div class="dhead">
+      <div><div class="eyebrow">${esc(j.title)} · langkah ${i+1} dari ${j.steps.length}</div>
+        <h2>${s} · ${esc(r.stage)}</h2>
+        <div class="meta">${actorChip(r.actor)}<span class="st ${r.lofi}">${STL[r.lofi]}</span><span class="chip">${r.reqs.length} kode requirement</span></div></div>
+      <div class="navbtns"><button ${prev?`data-go="#/journey/${j.id}/${prev}"`:"disabled"}>← ${prev||""}</button><button ${next?`data-go="#/journey/${j.id}/${next}"`:"disabled"}>${next||""} →</button></div>
+    </div>
+    <div class="flow">
+      <div class="box"><div class="eyebrow">Aktivitas pengguna</div><p>${esc(r.activity)}</p></div><div class="arr">→</div>
+      <div class="box"><div class="eyebrow">Respons sistem</div><p>${esc(r.response).replace(/\n+/g,"<br>")}</p></div><div class="arr">→</div>
+      <div class="box"><div class="eyebrow">Output</div><p>${esc(r.output)}</p></div>
+    </div>
+    ${r.note?`<div class="callout"><b>Klarifikasi / batas scope:</b> ${esc(r.note)}</div>`:""}
+  </div>
+  <div class="panel">
+    <div class="sec-title"><h3>Layar lofi (Figma iterasi 4)</h3><span class="st ${r.lofi}">${STL[r.lofi]}</span></div>
+    ${r.lofiNote?`<div class="callout ${covCls}" style="margin:0 0 14px"><b>${noteLbl}</b> ${esc(r.lofiNote)}</div>`:""}
+    ${shots}
+  </div>
+  <div class="panel">
+    <div class="sec-title"><h3>Requirement yang memenuhi langkah ini</h3><span class="muted" style="font-size:13px">Klik kode untuk deskripsi lengkap</span></div>
+    ${reqBlock(r.reqs)}
+  </div>`;
+}
+function thumbHTML(p, set){
+  const s = scr(p);
+  return `<button class="thumb" data-lb="${p}" data-set="${set.join(",")}"><div class="img"><img loading="lazy" src="${thumb(p)}" alt="${esc(s.title)}"></div><span>${esc(s.title)}<small>Halaman ${p}</small></span></button>`;
+}
+function reqItem(c){
+  const q = D.reqs[c];
+  const used = codeUsedBy[c] || [];
+  return `<div class="req" id="req-${c}"><button data-toggle><span class="rc">${c}</span><span class="rs">${esc(q.summary)}<small>${esc(q.feature)}</small></span><span class="chev">›</span></button>
+    <div class="body"><div class="lbl">Deskripsi lengkap (project charter)</div><p>${esc(q.desc)}</p>
+      ${q.user?`<div class="lbl">Pengguna</div><p>${esc(q.user)}</p>`:""}
+      ${used.length?`<div class="lbl">Dipakai di ${used.length} langkah</div><div class="links">${used.map(u=>`<button data-go="#/journey/${D.rows[u].journey}/${u}">${u}</button>`).join("")}</div>`:`<div class="lbl">Rujukan</div><p>${esc(q.refs||"-")} (tidak tercantum di baris journey mana pun)</p>`}
+    </div></div>`;
+}
+function reqBlock(codes){
+  const main = codes.filter(c => !foundSet.has(c)), base = codes.filter(c => foundSet.has(c));
+  const by = {}; main.forEach(c => (by[c.slice(0,2)] ||= []).push(c));
+  const layers = ["BE","FE","DS","DP"].filter(l => by[l]).map(l => `
+    <div class="layer"><h4><span class="tag ${l}">${l}</span>${LAYER[l]} <span class="muted">· ${by[l].length}</span></h4>${by[l].map(reqItem).join("")}</div>`).join("");
+  return `<div class="layers">${layers || `<p class="muted">Hanya kode fondasi.</p>`}
+    ${base.length?`<div class="found"><button data-found>＋ ${base.length} kode fondasi yang berlaku di semua langkah <span class="muted" style="font-weight:500">(${base.join(", ")})</span></button><div class="list">${base.map(reqItem).join("")}</div></div>`:""}</div>`;
+}
+
+// ---------- user story list ----------
+let storyActor = "all", storyQ = "";
+function viewStory(){
+  return `<section class="intro"><div><div class="eyebrow">Semua user story</div><h1>${order.length} langkah dari sheet User Journey</h1>
+    <p>Sumber: project charter 22 Oktober 2026 (K = Coordinator, V = Validator). Klik baris untuk membuka detailnya di journey.</p></div></section>
+  <div class="toolbar"><input class="search" id="sq" placeholder="Cari tahap, aktivitas, atau kode (mis. BE-03B)" value="${esc(storyQ)}">
+    <div class="seg" id="sa">${[["all","Semua"],["Coordinator","Coordinator"],["Validator","Validator"]].map(([v,t])=>`<button data-a="${v}" class="${storyActor===v?"on":""}">${t}</button>`).join("")}</div></div>
+  <div id="slist">${storyTable()}</div>`;
+}
+function storyTable(){
+  const q = storyQ.toLowerCase();
+  const rows = order.map(c => D.rows[c]).filter(r => (storyActor==="all"||r.actor===storyActor) &&
+    (!q || [r.code,r.stage,r.activity,r.response,r.output,r.reqs.join(" ")].join(" ").toLowerCase().includes(q)));
+  if(!rows.length) return `<div class="nores">Tidak ada yang cocok.</div>`;
+  return `<table class="list"><thead><tr><th>Kode</th><th>Tahap</th><th>Aktivitas pengguna</th><th class="hide-s">Journey</th><th>Lofi</th><th class="hide-s">Kode req.</th></tr></thead><tbody>
+    ${rows.map(r=>{const j=D.journeys.find(x=>x.id===r.journey);return `<tr class="click" data-go="#/journey/${r.journey}/${r.code}"><td class="c">${r.code}</td><td><b>${esc(r.stage)}</b><br><span class="muted" style="font-size:12.5px">${esc(r.actor)}</span></td><td>${esc(r.activity)}</td><td class="hide-s">${esc(j.title)}</td><td><span class="st ${r.lofi}">${r.lofi==="belum"?"Belum":r.lofi==="sebagian"?"Sebagian":"Ada"}</span></td><td class="hide-s">${r.reqs.filter(c=>!foundSet.has(c)).length} + ${r.reqs.filter(c=>foundSet.has(c)).length} fondasi</td></tr>`}).join("")}
+  </tbody></table>`;
+}
+
+// ---------- codes ----------
+let codeQ = "", codeL = "all";
+function viewCodes(focus){
+  return `<section class="intro"><div><div class="eyebrow">Indeks kode</div><h1>${Object.keys(D.reqs).length} kode requirement</h1>
+    <p>Ringkasan singkat tiap kode, deskripsi lengkap dari project charter, dan langkah journey yang memakainya.</p></div></section>
+  <div class="toolbar"><input class="search" id="cq" placeholder="Cari kode atau kata (mis. pretest, Retweet)" value="${esc(codeQ)}">
+  <div class="seg" id="cl">${[["all","Semua"],["BE","BE"],["FE","FE"],["DS","DS"],["DP","DP"]].map(([v,t])=>`<button data-l="${v}" class="${codeL===v?"on":""}">${t}</button>`).join("")}</div></div>
+  <div id="clist">${codeList(focus)}</div>`;
+}
+function codeList(focus){
+  const q = codeQ.toLowerCase();
+  const codes = Object.keys(D.reqs).filter(c => (codeL==="all"||c.startsWith(codeL)) &&
+    (!q || [c,D.reqs[c].summary,D.reqs[c].desc,D.reqs[c].feature].join(" ").toLowerCase().includes(q)));
+  if(!codes.length) return `<div class="nores">Tidak ada yang cocok.</div>`;
+  const by = {}; codes.forEach(c => (by[c.slice(0,2)] ||= []).push(c));
+  return `<div class="panel"><div class="layers">${["BE","FE","DS","DP"].filter(l=>by[l]).map(l=>`<div class="layer"><h4><span class="tag ${l}">${l}</span>${LAYER[l]} <span class="muted">· ${by[l].length}</span></h4>${by[l].map(reqItem).join("")}</div>`).join("")}</div></div>`;
+}
+
+// ---------- lofi gallery ----------
+function viewLofi(){
+  const groups = {}; D.screens.forEach(s => (groups[s.group] ||= []).push(s.page));
+  const all = D.screens.map(s=>s.page);
+  return `<section class="intro"><div><div class="eyebrow">Figma · [IIT 26] NoLimit Data Tagger</div><h1>${D.screens.length} halaman lofi</h1>
+    <p>Dikelompokkan per area. Saat layar dibuka, langkah journey yang memakainya ikut ditampilkan.</p></div></section>
+  ${Object.entries(groups).map(([g,ps])=>`<div class="gal-group"><h3>${esc(g)} <span class="chip">${ps.length}</span></h3>
+    ${g.startsWith("Referensi")?`<p class="ref-note">Tangkapan layar dashboard NoLimit yang sudah ada, dipakai sebagai acuan desain (bukan lofi baru).</p>`:""}
+    <div class="strip">${ps.map(p=>thumbHTML(p, all)).join("")}</div></div>`).join("")}`;
+}
+
+// ---------- rules & clarifications ----------
+function codeLinks(cs){ return `<div class="links">${cs.map(c=>`<button data-go="#/codes/${c}">${c}</button>`).join("")}</div>`; }
+function viewRules(){
+  return `<section class="intro"><div><div class="eyebrow">Konteks tambahan</div><h1>Aturan validasi & keputusan klarifikasi</h1>
+    <p>Aturan R1–R5 berlaku saat Validator memvalidasi (Journey 3). Keputusan klarifikasi 22 Oktober 2026 menjadi batas scope yang dirujuk di banyak langkah.</p></div></section>
+  <h2 style="font-size:20px;margin-bottom:12px">Aturan validasi</h2>
+  <div class="rules" style="margin-bottom:28px">${D.rules.map(r=>`<div class="rule"><div class="rh"><b>${r.code}</b></div><p>${esc(r.text)}</p>${r.note?`<p class="muted" style="font-size:13px">${esc(r.note)}</p>`:""}${codeLinks(r.reqs)}</div>`).join("")}</div>
+  <h2 style="font-size:20px;margin-bottom:12px">Keputusan klarifikasi</h2>
+  <div class="rules">${D.clar.map(c=>{const open=/belum|sebagian/i.test(c.status);return `<div class="rule"><div class="rh"><b>${c.code} · ${esc(c.topic)}</b><span class="st ${/Dikeluarkan/.test(c.status)?"belum":open?"sebagian":"ada"}">${/Dikeluarkan/.test(c.status)?"Di luar scope":open?"Sebagian/terbuka":"Disepakati"}</span></div><p>${esc(c.text)}</p>${c.reqs.length?codeLinks(c.reqs):""}</div>`}).join("")}</div>`;
+}
+
+// ---------- events ----------
+function bind(r){
+  const app = $("#app");
+  app.onclick = e => {
+    const g = e.target.closest("[data-go]"); if(g){ go(g.dataset.go); return; }
+    const l = e.target.closest("[data-lb]"); if(l){ openLB(+l.dataset.lb, l.dataset.set.split(",").map(Number)); return; }
+    const t = e.target.closest("[data-toggle]"); if(t){ t.parentElement.classList.toggle("open"); return; }
+    const f = e.target.closest("[data-found]"); if(f){ f.parentElement.classList.toggle("open"); return; }
+    const a = e.target.closest("#sa button"); if(a){ storyActor=a.dataset.a; render(); return; }
+    const cl = e.target.closest("#cl button"); if(cl){ codeL=cl.dataset.l; render(); return; }
+  };
+  const sq = $("#sq"); if(sq) sq.oninput = () => { storyQ = sq.value; $("#slist").innerHTML = storyTable(); };
+  const cq = $("#cq"); if(cq) cq.oninput = () => { codeQ = cq.value; $("#clist").innerHTML = codeList(); };
+  if(r.view==="codes" && r.a){ const el=document.getElementById("req-"+r.a); if(el) el.classList.add("open"); }
+}
+
+// ---------- lightbox ----------
+let lbSet = [], lbI = 0;
+function openLB(p, set){ lbSet = set.length ? set : [p]; lbI = Math.max(0, lbSet.indexOf(p)); showLB(); $("#lb").classList.add("open"); document.body.style.overflow="hidden"; }
+function showLB(){
+  const p = lbSet[lbI], s = scr(p), img = $("#lbImg");
+  img.src = full(p); img.className = "fit"; img.alt = s.title;
+  $("#lbT").innerHTML = `${esc(s.title)}<small>Halaman ${p} · ${esc(s.group)} · ${esc(s.actor)}</small>`;
+  const u = pageUsedBy[p] || [];
+  $("#lbUsed").innerHTML = u.length ? `Dipakai di: ${u.map(c=>`<button data-step="${c}">${c}</button>`).join("")}` : (p<=2?"Referensi desain":"");
+  $("#lbN").textContent = `${lbI+1} / ${lbSet.length}`;
+  $("#lbPrev").disabled = lbI===0; $("#lbNext").disabled = lbI===lbSet.length-1;
+}
+function closeLB(){ $("#lb").classList.remove("open"); document.body.style.overflow=""; }
+$("#lbPrev").onclick = () => { if(lbI>0){lbI--;showLB();} };
+$("#lbNext").onclick = () => { if(lbI<lbSet.length-1){lbI++;showLB();} };
+$("#lbX").onclick = closeLB;
+$("#lbImg").onclick = e => { e.target.className = e.target.className==="fit"?"zoom":"fit"; };
+$("#lbUsed").onclick = e => { const b=e.target.closest("[data-step]"); if(b){ closeLB(); go(`#/journey/${D.rows[b.dataset.step].journey}/${b.dataset.step}`); } };
+let tx = null;
+$("#lb").addEventListener("touchstart", e => { tx = e.touches.length===1 ? e.touches[0].clientX : null; }, {passive:true});
+$("#lb").addEventListener("touchend", e => { if(tx===null || $("#lbImg").className==="zoom") return; const dx = e.changedTouches[0].clientX - tx; if(Math.abs(dx) > 60) (dx < 0 ? $("#lbNext") : $("#lbPrev")).click(); tx = null; });
+$("#lb").addEventListener("click", e => { if(e.target.classList.contains("stage")) closeLB(); });
+document.addEventListener("keydown", e => {
+  if(!$("#lb").classList.contains("open")) return;
+  if(e.key==="Escape") closeLB();
+  if(e.key==="ArrowLeft") $("#lbPrev").click();
+  if(e.key==="ArrowRight") $("#lbNext").click();
+});
+
+$("#foot").innerHTML = `Sumber: 2026-DataTaggerPanelNoLimit-PC.xlsx (sheet User Journey & CalculationForPM, diperbarui 22 Oktober 2026) dan [IIT 26] NoLimit Data Tagger (Figma, lofi iterasi 4). Status lofi adalah hasil review terhadap layar yang tersedia.`;
+render();
+</script>
+</body>
+</html>
